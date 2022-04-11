@@ -62,5 +62,5 @@ export default {
 </script>
 <style lang="sass">
 .searchDIV
-  @apply sticky flex top-0 justify-center w-full bg-black h-12
+  @apply sticky flex top-0 justify-center w-full h-12
 </style>

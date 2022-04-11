@@ -47,7 +47,7 @@ export default {
   @apply flex mt-6 mx-8 gap-5
   &-left
     @apply border-2 shadow -ml-8
-    flex:0 0 300px
+    flex:0 0 320px
   &-center
     @apply border-2 shadow
     flex:1 1

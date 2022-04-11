@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'tailwindcss/tailwind.css'
 import 'animate.css'
 import '@/styles/main.sass'
+import '@/styles/icon/iconfont.css'
 
 Vue.use(ElementUI)
 

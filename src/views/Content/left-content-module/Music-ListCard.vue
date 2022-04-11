@@ -1,25 +1,26 @@
 <template>
 <div>
-<musicList :musicList="musicList"></musicList>
+<musicList :musicListProps="musicListCurrent"></musicList>
 </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import musicList from '@/components/MusicComponent/musicList.vue'
 export default {
   name: 'MusicListCard',
   data () {
     return {
-      musicList: []
+      musicListCurrent: []
     }
   },
-  async mounted () {
+  async created () {
     const res = await this.getRecommendSong()
-    console.log('🚀 ~ file: Music-ListCard.vue ~ line 19 ~ mounted ~ res', res)
-    this.musicList = res
+    this.musicListCurrent = res
+    this.setMusicList(this.musicListCurrent)
   },
   methods: {
+    ...mapMutations('MusicModule', ['setMusicList']),
     ...mapActions('MusicModule', ['getRecommendSong'])
   },
   components: { musicList }

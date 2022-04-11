@@ -14,20 +14,21 @@
   </el-col>
 </el-row>
   <div class="flex justify-center">
-    <el-button>播放全部音乐</el-button>
+    <el-button @click="handelPlayAllMusic(musicListProps)">播放全部音乐</el-button>
   </div>
-    <div v-for="item in musicList" :key="item.id">
+    <div v-for="item in musicListProps" :key="item.id">
     <music-card :SongItem="item">
     </music-card>
     </div>
 </div>
 </template>
-
+c
 <script>
+import { mapMutations, mapState } from 'vuex'
 import MusicCard from '@/components/MusicComponent/musicCard.vue'
 export default {
   props: {
-    musicList: {
+    musicListProps: {
       type: Array,
       default: () => []
     }
@@ -37,7 +38,16 @@ export default {
   },
   created () {
   },
+  computed: {
+    ...mapState('MusicModule', ['musicList'])
+  },
   methods: {
+    ...mapMutations('MusicModule', ['setMusicList', 'setMusicId', 'clearMusicList']),
+    handelPlayAllMusic (list) {
+      this.clearMusicList()
+      this.setMusicList(list)
+      this.setMusicId(this.musicList[0].id)
+    }
   },
   components: {
     'music-card': MusicCard

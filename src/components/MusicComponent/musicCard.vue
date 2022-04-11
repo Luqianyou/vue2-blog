@@ -1,5 +1,5 @@
 <template>
-<div class="my-3" @click="handleMusic(SongItem)">
+<div class="my-3" @dblclick="handleMusic(SongItem)">
   <el-row>
     <el-col :span="5">
     <el-image style="width:50px;height: 50px;" :src="SongItem.al.picUrl"></el-image>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
   name: 'MusicListCard',
   props: {
@@ -26,10 +26,19 @@ export default {
     return {
     }
   },
+  computed: {
+    ...mapState('MusicModule', ['musicList', 'musicId'])
+  },
   methods: {
     ...mapActions('MusicModule', ['AsyncSetMusicId']),
+    ...mapMutations('MusicModule', ['setMusicList', 'deleteMusicListItem']),
     handleMusic (obj) {
       this.AsyncSetMusicId(obj.id)
+      const musicListItem = this.musicList.find(item => item.id === obj.id)
+      if (musicListItem) {
+        this.deleteMusicListItem(obj.id)
+      }
+      this.setMusicList(obj)
     }
   }
 }

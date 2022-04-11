@@ -12,6 +12,6 @@ export function getRecommendSongList () {
   return getMusic('/recommend/songs')
 }
 
-export function getSongDetailById (ids) {
-  return getMusic('/song/detail', { ids })
+export function getSongDetailById (id) {
+  return getMusic('/song/url', { id })
 }
