@@ -1,4 +1,4 @@
-import { getHotDetail, getRecommendSongList, getSongDetailById } from '@/api/MusicApi.js'
+import { getHotDetail, getRecommendSongList, getSongDetailById, getSongDetailByName, suggestSongList, getSuggertSongListById } from '@/api/MusicApi.js'
 import { Message } from 'element-ui'
 import { concat } from 'lodash-es'
 
@@ -12,6 +12,7 @@ export default {
     processLine: 0,
     voice: 30,
     isMuted: false,
+    musicViewList: [],
     musicList: [],
     MusicIndex: 0
   },
@@ -28,11 +29,17 @@ export default {
     setMusicList (state, items) {
       state.musicList = concat(state.musicList, items)
     },
+    setMusicViewList (state, items) {
+      state.musicViewList = concat(state.musicViewList, items)
+    },
     deleteMusicListItem (state, id) {
       state.musicList = state.musicList.filter(item => item.id !== id)
     },
     clearMusicList (state) {
       state.musicList = []
+    },
+    clearMusicViewList (state) {
+      state.musicViewList = []
     }
   },
   actions: {
@@ -48,7 +55,6 @@ export default {
     },
 
     AsyncSetMusicId ({ commit }, id) {
-      console.log('🚀 ~ file: MusicModule.js ~ line 41 ~ AsyncSetMusicId ~ id', id)
       commit('setMusicId', id)
     },
 
@@ -71,6 +77,39 @@ export default {
           return
         }
         return data.data
+      }
+    },
+
+    async AsyncGetSongDetailByName ({ commit, state }, value) {
+      const { status, data } = await getSongDetailByName(value)
+      if (status === 200 && data.code === 200) {
+        if (!data) {
+          Message.error('暂时没有数据')
+          return
+        }
+        return data.result.songs
+      }
+    },
+
+    async AsyncSuggestSongList ({ commit, state }, value) {
+      const { status, data } = await suggestSongList(value)
+      if (status === 200 && data.code === 200) {
+        if (!data) {
+          Message.error('暂时没有数据')
+          return
+        }
+        return data.result
+      }
+    },
+
+    async AsyncGetSuggertSongListById ({ commit, state }, id) {
+      const { status, data } = await getSuggertSongListById(id)
+      if (status === 200 && data.code === 200) {
+        if (!data) {
+          Message.error('暂时没有数据')
+          return
+        }
+        return data.songs[0]
       }
     }
   }

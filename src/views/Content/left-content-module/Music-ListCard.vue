@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import musicList from '@/components/MusicComponent/musicList.vue'
 export default {
   name: 'MusicListCard',
@@ -14,13 +14,22 @@ export default {
       musicListCurrent: []
     }
   },
+  computed: {
+    ...mapState('MusicModule', ['musicViewList'])
+  },
+  watch: {
+    'musicViewList' (value) {
+      this.musicListCurrent = value
+    }
+  },
   async created () {
     const res = await this.getRecommendSong()
     this.musicListCurrent = res
-    this.setMusicList(this.musicListCurrent)
+    this.setMusicList(res)
+    this.setMusicId(res[0].id)
   },
   methods: {
-    ...mapMutations('MusicModule', ['setMusicList']),
+    ...mapMutations('MusicModule', ['setMusicList', 'clearMusicViewList', 'setMusicId']),
     ...mapActions('MusicModule', ['getRecommendSong'])
   },
   components: { musicList }

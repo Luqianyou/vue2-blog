@@ -22,7 +22,7 @@
     </div>
 </div>
 </template>
-c
+
 <script>
 import { mapMutations, mapState } from 'vuex'
 import MusicCard from '@/components/MusicComponent/musicCard.vue'
@@ -39,7 +39,7 @@ export default {
   created () {
   },
   computed: {
-    ...mapState('MusicModule', ['musicList'])
+    ...mapState('MusicModule', ['musicList', 'musicId'])
   },
   methods: {
     ...mapMutations('MusicModule', ['setMusicList', 'setMusicId', 'clearMusicList']),

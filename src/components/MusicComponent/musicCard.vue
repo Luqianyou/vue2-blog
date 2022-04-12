@@ -33,12 +33,12 @@ export default {
     ...mapActions('MusicModule', ['AsyncSetMusicId']),
     ...mapMutations('MusicModule', ['setMusicList', 'deleteMusicListItem']),
     handleMusic (obj) {
-      this.AsyncSetMusicId(obj.id)
       const musicListItem = this.musicList.find(item => item.id === obj.id)
       if (musicListItem) {
         this.deleteMusicListItem(obj.id)
       }
       this.setMusicList(obj)
+      this.AsyncSetMusicId(obj.id)
     }
   }
 }

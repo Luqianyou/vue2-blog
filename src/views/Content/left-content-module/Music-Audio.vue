@@ -39,6 +39,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import gIcon from '@/components/icon.vue'
 import { returnSecond, handleMusicTime } from '@/utils/ToSeconds'
+import { Message } from 'element-ui'
 export default {
   name: 'MusicAudio',
   data () {
@@ -66,6 +67,11 @@ export default {
     ...mapMutations('MusicModule', ['changePlayState', 'setMusicId']),
     async playMusic () {
       const res = await this.getSongDetail()
+      if (res[0].url == null) {
+        Message.error('该歌曲暂无版权，将为您播放下一首歌曲')
+        this.changeMusic('next')
+        return
+      }
       this.musicUrl = res[0].url
       this.$refs.audioPlayer.play()
     },
@@ -104,12 +110,6 @@ export default {
     }
   },
   watch: {
-    'musicList' (arr) {
-      if (arr.length > 0) {
-        this.setMusicId(this.musicList[0].id)
-        this.$refs.audioPlayer.play()
-      }
-    },
     'volume' (value) {
       value > 0 ? this.isMuted = false : this.isMuted = true
     },
@@ -122,7 +122,6 @@ export default {
     },
     'musicId' (id) {
       if (id) {
-        console.log('🚀 ~ file: Music-Audio.vue ~ line 120 ~ id', id)
         this.musicDetail = this.musicList.find(item => item.id === this.musicId)
         this.musicIndex = this.musicList.findIndex(item => item.id === this.musicId)
         this.duration = handleMusicTime(this.musicDetail.dt)
