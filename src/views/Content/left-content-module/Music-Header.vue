@@ -16,7 +16,8 @@
     prefix-icon="el-icon-search"
     slot="reference"
     :clearable="true"
-    class="w-50 mt-2"
+    class="w-48 mt-2 absolute left-1/2"
+    style="transform: translateX(-50%);"
     v-model="searchText"
     @focus="handleFocus"
     @input="handleSearch"
@@ -24,16 +25,18 @@
     </el-input>
 
   <div v-if='searchText === ""'>
-  <div  :class="index <3 ? 'flex gap-5 text-red-500' : 'flex gap-5'" v-for="(item,index) of hotSearchList" :key="index" @click="clickHotSearchItem(item)">
+  <div style="width:150px;font-size:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;" :class="index <3 ? 'flex gap-2 text-red-500' : 'flex gap-2'" v-for="(item,index) of hotSearchList" :key="index" @click="clickHotSearchItem(item)">
   <div>{{index+1}}</div>
   <div class="music-name">{{item.searchWord}}</div>
   </div>
   </div>
 
   <div v-else>
-    <div>搜索建议</div>
-    <div>
+    <div class="font-bold">搜索建议</div>
+    <div v-if="searchObject.songs && searchObject.songs.length !== 0">
+    <div class="font-bold">单曲</div>
      <div
+     style="width:150px;font-size:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"
      v-for="(item, index) in searchObject.songs"
      :key="index"
      @click="clickSuggestItem(item)"
@@ -41,8 +44,30 @@
      {{ item.name + " - " + item.artists[0].name }}
    </div>
     </div>
+    <div v-if="searchObject.artists && searchObject.artists.length !== 0">
+    <div class="font-bold">歌手</div>
+     <div
+     style="width:150px;font-size:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"
+     v-for="(item, index) in searchObject.artists"
+     :key="index"
+     @click="clickSuggestSingerOrAlbum(item)"
+   >
+     {{ item.name }}
+   </div>
+    </div>
+    <div v-if="searchObject.albums && searchObject.albums.length !== 0">
+    <div class="font-bold">专辑</div>
+     <div
+     style="width:150px;font-size:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"
+     v-for="(item, index) in searchObject.albums"
+     :key="index"
+     @click="clickSuggestSingerOrAlbum(item)"
+   >
+     {{ item.name }}
+   </div>
+    </div>
   </div>
-    </el-popover>
+  </el-popover>
   </div>
 </div>
 </template>
@@ -78,8 +103,17 @@ export default {
     },
     async clickSuggestItem (item) {
       const res = await this.AsyncGetSuggertSongListById(item.id)
-      this.setMusicList(res)
+      this.setMusicList(res[0])
       this.setMusicId(item.id)
+      this.searchText = ''
+      this.visible = false
+    },
+    async clickSuggestSingerOrAlbum (item) {
+      this.clearMusicViewList()
+      const res = await this.AsyncGetSongDetailByName(item.name)
+      this.setMusicViewList(res)
+      this.visible = false
+      this.searchText = ''
     },
     ...mapActions('MusicModule', ['getSearchHotMusicList', 'AsyncGetSongDetailByName', 'AsyncSuggestSongList', 'AsyncGetSuggertSongListById']),
     ...mapMutations('MusicModule', ['clearMusicViewList', 'setMusicViewList', 'setMusicId', 'setMusicList'])
@@ -92,5 +126,5 @@ export default {
 </script>
 <style lang="sass">
 .searchDIV
-  @apply sticky flex top-0 justify-center w-full h-12
+  @apply relative w-full h-12
 </style>

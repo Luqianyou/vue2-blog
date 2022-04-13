@@ -109,7 +109,7 @@ export default {
           Message.error('暂时没有数据')
           return
         }
-        return data.songs[0]
+        return data.songs
       }
     }
   }

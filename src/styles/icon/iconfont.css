@@ -1,19 +1,23 @@
 @font-face {
-  font-family: 'iconfont';  /* project id 3318003 */
-  src: url('');
-  src: url('?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_3318003_7151ds4x3h8.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_3318003_7151ds4x3h8.woff') format('woff'),
-  url('//at.alicdn.com/t/font_3318003_7151ds4x3h8.ttf') format('truetype'),
-  url('#iconfont') format('svg');
+  font-family: 'iconfont';  /* Project id 3318003 */
+  src: url('//at.alicdn.com/t/font_3318003_qcmqu0lpic.woff2?t=1649834656555') format('woff2'),
+       url('//at.alicdn.com/t/font_3318003_qcmqu0lpic.woff?t=1649834656555') format('woff'),
+       url('//at.alicdn.com/t/font_3318003_qcmqu0lpic.ttf?t=1649834656555') format('truetype');
 }
-
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yincangdaohang:before {
+  content: "\e63d";
+}
+
+.icon-xianshidaohang:before {
+  content: "\e63e";
 }
 
 .icon-bofang:before {

@@ -4,7 +4,13 @@
   <Header></Header>
 </div>
 <div class="content">
-  <div v-if="1 === 1" class="content-left">
+  <div v-show="!LeftViewVisible" class="absolute z-10 left-3 top2" @click="handleClickVisible">
+  <g-icon :className="'icon-xianshidaohang'"></g-icon>
+  </div>
+  <div v-show="LeftViewVisible" class="content-left">
+  <div class="absolute z-10 right-3 top-2" @click="handleClickVisible">
+  <g-icon :className="'icon-yincangdaohang'"></g-icon>
+  </div>
     <LeftView></LeftView>
   </div>
   <div class="content-center">
@@ -23,10 +29,13 @@ import LeftView from './Content/left-view.vue'
 import CenterView from './Content/center-view.vue'
 import RightView from './Content/right-view.vue'
 import NProgress from 'nprogress'
+import gIcon from '@/components/icon.vue'
 export default {
   name: 'Layout',
   data () {
-    return {}
+    return {
+      LeftViewVisible: true
+    }
   },
   mounted () {
     NProgress.start()
@@ -35,8 +44,11 @@ export default {
     }, 5000)
   },
   methods: {
+    handleClickVisible () {
+      this.LeftViewVisible = !this.LeftViewVisible
+    }
   },
-  components: { Header, LeftView, CenterView, RightView }
+  components: { Header, LeftView, CenterView, RightView, gIcon }
 }
 </script>
 
@@ -46,7 +58,7 @@ export default {
 .content
   @apply flex mt-6 mx-8 gap-5
   &-left
-    @apply border-2 shadow -ml-8
+    @apply border-2 shadow -ml-8 relative
     flex:0 0 320px
   &-center
     @apply border-2 shadow
